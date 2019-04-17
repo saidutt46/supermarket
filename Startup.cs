@@ -26,14 +26,24 @@ namespace Supermarket
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<AppDbContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:SuperMarket"]));
 
+            var connectionString = "Server=localhost;Database=market;User Id=sa;Password=killBee";
+            services.AddDbContext<AppDbContext>(o =>
+                o.UseSqlServer(connectionString));
 
+            //services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //services.AddScoped<IProductRepository, ProductRepository>();
+            //services.AddScoped<ICategoryService, CategoryService>();
+            //services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IProductService, ProductService>();
+            //services.AddAutoMapper();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+
             services.AddAutoMapper();
 
         }
@@ -51,7 +61,7 @@ namespace Supermarket
             }
 
             //context.Database.EnsureCreated();
-            context.Database.Migrate();
+            //context.Database.Migrate();
 
             app.UseHttpsRedirection();
             app.UseMvc();

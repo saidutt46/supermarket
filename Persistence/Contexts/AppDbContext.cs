@@ -11,46 +11,44 @@ namespace Supermarket.Persistence.Contexts
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.Entity<Category>().ToTable("Categories");
-            modelBuilder.Entity<Category>().HasKey(p => p.Id);
-            modelBuilder.Entity<Category>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-            modelBuilder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(30);
-            modelBuilder.Entity<Category>().HasMany(p => p.Products).WithOne(p => p.Category).HasForeignKey(p => p.CategoryId);
+            builder.Entity<Category>().ToTable("Categories");
+            builder.Entity<Category>().HasKey(p => p.Id);
+            builder.Entity<Category>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+            builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(30);
+            builder.Entity<Category>().HasMany(p => p.Products).WithOne(p => p.Category).HasForeignKey(p => p.CategoryId);
 
-            modelBuilder.Entity<Category>().HasData
+            builder.Entity<Category>().HasData
             (
                 new Category { Id = 100, Name = "Fruits and Vegetables" }, // Id set manually due to in-memory provider
-                new Category { Id = 101, Name = "Dairy" },
-                new Category { Id = 102, Name = "Toys" },
-                new Category { Id = 107, Name = "Weapons" }
+                new Category { Id = 101, Name = "Dairy" }
             );
 
-            modelBuilder.Entity<Product>().ToTable("Products");
-            modelBuilder.Entity<Product>().HasKey(p => p.Id);
-            modelBuilder.Entity<Product>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-            modelBuilder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Product>().Property(p => p.QuantityInPackage).IsRequired();
-            modelBuilder.Entity<Product>().Property(p => p.UnitOfMeasurement).IsRequired();
+            builder.Entity<Product>().ToTable("Products");
+            builder.Entity<Product>().HasKey(p => p.Id);
+            builder.Entity<Product>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+            builder.Entity<Product>().Property(p => p.Name).IsRequired().HasMaxLength(50);
+            builder.Entity<Product>().Property(p => p.QuantityInPackage).IsRequired();
+            builder.Entity<Product>().Property(p => p.UnitOfMeasurement).IsRequired();
 
-            modelBuilder.Entity<Product>().HasData
+            builder.Entity<Product>().HasData
             (
                 new Product
                 {
-                    Id = 10000,
-                    Name = "Kashmir Apples",
-                    QuantityInPackage = 6,
+                    Id = 100,
+                    Name = "Apple",
+                    QuantityInPackage = 1,
                     UnitOfMeasurement = EUnitOfMeasurement.Unity,
                     CategoryId = 100
                 },
                 new Product
                 {
-                    Id = 10001,
+                    Id = 101,
                     Name = "Milk",
-                    QuantityInPackage = 1,
+                    QuantityInPackage = 2,
                     UnitOfMeasurement = EUnitOfMeasurement.Liter,
                     CategoryId = 101,
                 }
